@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYFILE</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Cyfiles">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+    <style>
+        /* Reset and flat black canvas architecture */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Container centering layout */
+        .intro-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* --- LOGO WRAPPER: APERTURE CONTAINER --- */
+        .logo-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            overflow: hidden; /* Restricts the scanning laser beam strictly to the dimensions of the logo area */
+            /* Scaled up to run completely over an 8-second cycle */
+            animation: modernAperture 8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- GLOWING WHITE LASER SCANNER ELEMENT --- */
+        .laser-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ffffff;
+            box-shadow: 0 0 18px #ffffff, 0 0 25px #ffffff, 0 0 35px #ffffff;
+            opacity: 0;
+            z-index: 10;
+            /* Starts moving across the icon after entry phase completes (at 1.5s) */
+            animation: whiteLaserScan 8s ease-in-out forwards;
+        }
+
+        /* --- BRAND TEXT: CINEMATIC EXTENSION --- */
+        .brand-text {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0;
+            /* Scaled up to align natively to the 8-second timeline */
+            animation: modernTextReveal 8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        /* --- 8-SECOND TIMED KEYFRAME ENGINE --- */
+        
+        @keyframes modernAperture {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-90deg);
+            }
+            /* 1.2s mark: Clean geometric entry snap-in */
+            15% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            /* Holds perfectly still until the 7.2s mark while the laser finishes scanning */
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            /* 8.0s mark: Advanced Shutter Collapse */
+            100% {
+                opacity: 0;
+                transform: scale(0.2) rotate(45deg);
+            }
+        }
+
+        @keyframes whiteLaserScan {
+            0%, 15% {
+                top: 0%;
+                opacity: 0;
+            }
+            /* Laser reveals and glows once logo settles in */
+            18% {
+                top: 0%;
+                opacity: 1;
+            }
+            /* Downward sweep */
+            48% {
+                top: 98%;
+                opacity: 1;
+            }
+            /* Upward sweep back over honeycomb structure */
+            78% {
+                top: 0%;
+                opacity: 1;
+            }
+            /* Deactivates just before the exit window cascade starts */
+            88%, 100% {
+                top: 0%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes modernTextReveal {
+            0% {
+                opacity: 0;
+                letter-spacing: -4px;
+                transform: translateY(10px);
+            }
+            /* Text settles into place */
+            18% {
+                opacity: 1;
+                letter-spacing: 6px;
+                transform: translateY(0);
+            }
+            /* Retains clean readability during scan lifecycle phases */
+            90% {
+                opacity: 1;
+                letter-spacing: 8px;
+                transform: translateY(0);
+            }
+            /* Vertical exit slice */
+            100% {
+                opacity: 0;
+                letter-spacing: 12px;
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro-container">
+        <div class="logo-wrapper">
+            <!-- Movable laser line element nested safely over image -->
+            <div class="laser-line"></div>
+            <!-- Targeted image element sitting directly outside the image folder -->
+            <img src="./favicon-192.png" alt="Cyfiles Vault Logo">
+        </div>
+        <div class="brand-text">Cyfiles</div>
+    </div>
+
+    <script>
+        // Synchronized page routing logic set to exactly 10000 milliseconds
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.location.replace('./doc.html');
+            }, 8000);
+        });
+
+        // Register PWA service worker directly from splash layout 
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>
